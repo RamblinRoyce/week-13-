@@ -41,30 +41,48 @@ module.exports = function(app){
 
 	app.post('/api/friends', function(req, res){
 
-		// Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
-		// It will do this by sending out the value "true" have a table 
-		if(friendsData.length < 5 ){
-			friendsData.push(req.body);
-			res.json(true); // KEY LINE
-		}
-
-		// Or false if they don't have a table
-		else{
-			waitListData.push(req.body);
-			res.json(false); // KEY LINE
-		}
+		var newUser = req.body;
+		            var differences = [];
+		            if (friends.length < 1) {
+		                console.log("unable to do calculation; not enough users");
+		            } else {
+		                compareFriends(friends, newUser, differences);
+		                var lowest = differences[0];
+		                for (var i = 0; i < differences.length; i++) {
+		                    if (differences[i] < lowest) {
+		                        lowest = differences[i];
+		                    }
+		                };
+		                var bestMatch = differences.indexOf(lowest);
+		                res.send(friends[bestMatch]);
+		            };
+		            friends.push(newUser);
+		        };
 
 	});
+
+
+	function compareFriends(friends, newUser, differences) {
+	    var curUserIndex = 0;
+	    while (curUserIndex < friends.length) {
+	        var totalDifference = 0;
+	        for (var i = 0; i < newUser.scores.length; i++) {
+	            totalDifference += Math.abs(parseInt(friends[curUserIndex].scores[i]) - parseInt(newUser.scores[i]));
+	        }
+	        differences.push(totalDifference);
+	        curUserIndex++;
+	    }
+	}
 
 	// ---------------------------------------------------------------------------
 	// I added this below code so you could clear out the table while working with the functionality.
 	// Don't worry about it!
 
-	app.post('/api/clear', function(req, res){
-		// Empty out the arrays of data
-		friendsData = [];
-		waitListData = [];
+	// app.post('/api/clear', function(req, res){
+	// 	// Empty out the arrays of data
+	// 	friendsData = [];
+	// 	waitListData = [];
 
-		console.log(tableData);
-	})
+	// 	console.log(tableData);
+	// })
 }

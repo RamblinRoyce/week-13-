@@ -6,7 +6,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-
+var htmlRoutes = require('./app/routing/html-routes.js');
+var ApiRoutes = require('./app/routing/api-routes.js');
+var friends = require('./app/data/friends.js');
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
@@ -33,6 +35,8 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 require('./app/routing/api-routes.js')(app); 
 require('./app/routing/html-routes.js')(app);
 
+api.getApi(app, friends);
+api.postAPI(app, friends);
 
 // ==============================================================================
 // LISTENER
