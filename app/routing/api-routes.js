@@ -6,7 +6,7 @@
 
 var friendsData 	= require('../data/friends.js');
 // var waitListData 	= require('../data/waitinglist-data.js');
-var path 			= require('path');
+// var path 			= require('path');
 
 
 
@@ -42,23 +42,21 @@ module.exports = function(app){
 	app.post('/api/friends', function(req, res){
 
 		var newUser = req.body;
-		            var differences = [];
-		            if (friends.length < 1) {
-		                console.log("unable to do calculation; not enough users");
-		            } else {
-		                compareFriends(friends, newUser, differences);
-		                var lowest = differences[0];
-		                for (var i = 0; i < differences.length; i++) {
-		                    if (differences[i] < lowest) {
-		                        lowest = differences[i];
-		                    }
-		                };
-		                var bestMatch = differences.indexOf(lowest);
-		                res.send(friends[bestMatch]);
-		            };
-		            friends.push(newUser);
-		        };
-
+        var differences = [];
+        if (friends.length < 1) {
+            console.log("unable to do calculation; not enough users");
+        } else {
+            compareFriends(friends, newUser, differences);
+            var lowest = differences[0];
+            for (var i = 0; i < differences.length; i++) {
+                if (differences[i] < lowest) {
+                    lowest = differences[i];
+                }
+            };
+            var bestMatch = differences.indexOf(lowest);
+            res.send(friends[bestMatch]);
+        };
+        friends.push(newUser);
 	});
 
 
